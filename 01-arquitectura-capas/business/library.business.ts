@@ -1,5 +1,6 @@
-import { Book, LibraryData } from "../data/library.data";
-import { StoreData } from "../data/storage.data";
+import { Book } from "../data/book";
+import { LibraryData } from "../data/library";
+import { StoreData } from "../data/store";
 
 export class LibraryBusiness {
   libraryData = new LibraryData();
@@ -8,17 +9,20 @@ export class LibraryBusiness {
   async getAllBooksAvailable(): Promise<Book[]> {
     const books = await this.libraryData.getAllBooks();
 
-    const listPromises = books.map(async (book) => {
+    const processBooksAvailable = books.map(async (book) => {
       const isAvailable = await this.storeData.isBookAvailable(book.bookId);
-      return isAvailable ? book : undefined;
+
+      return isAvailable ? book : null;
     });
 
-    const booksAvailable = await Promise.all(listPromises);
-    return (booksAvailable as Book[]).filter((book) => book !== null);
+    const booksAvailable = await Promise.all(processBooksAvailable); // [Book, null, Book, null, ...]
+    const results = booksAvailable.filter((book) => book !== null);
+    return results as Book[];
   }
 
   async getBookById(bookId: number): Promise<Book | undefined> {
-    if (bookId < 1) throw new Error("Invalid bookedIK");
+    if (bookId < 1) throw new Error("Invalid bookId");
+
     return this.libraryData.getBookById(bookId);
   }
 }
