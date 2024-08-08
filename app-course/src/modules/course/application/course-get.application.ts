@@ -1,10 +1,15 @@
+import { Inject } from '@nestjs/common';
+
 import { CourseRepository } from '../domain/repositories/course.repository';
-import { Course } from '../domain/roots/course';
+import { CourseInfrastructure } from '../infrastructure/course.infrastructure';
 
 export class CourseGetApplication {
-  constructor(private readonly repository: CourseRepository) {}
+  constructor(
+    @Inject(CourseInfrastructure) public instance: CourseRepository,
+  ) {}
 
-  async get(): Promise<Course[]> {
-    return this.repository.get();
+  async get() /* : Promise<Course[]> */ {
+    return this.instance.get();
+    //return this.repository.get();
   }
 }

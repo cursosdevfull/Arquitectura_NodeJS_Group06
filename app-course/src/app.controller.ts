@@ -1,18 +1,41 @@
 import { Controller, Get } from '@nestjs/common';
 
-import { AppService } from './app.service';
+import { CourseGetApplication } from './modules/course/application/course-get.application';
 
-@Controller()
+@Controller('course')
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(private readonly miClass: CourseGetApplication) {}
 
-  @Get('/hello')
-  getHello(): any {
-    const users = [
-      { name: 'John Doe', age: 30 },
-      { name: 'Jane Doe', age: 25 },
-      { name: 'Jim Doe', age: 35 },
-    ];
-    return users; //this.appService.getHello();
+  @Get()
+  async list(): Promise<any> {
+    try {
+      const courses = await this.miClass.get();
+
+      return courses;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+
+      return 'An error occurred';
+    }
+  }
+
+  @Get('/all')
+  async allCourse(): Promise<any> {
+    /*     try {
+      const repository: CourseRepository = new CourseInfrastructure();
+      const application = new CourseGetApplication(repository);
+
+      const courses = await application.get();
+
+      return courses;
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        return error.message;
+      }
+
+      return 'An error occurred';
+    } */
   }
 }
