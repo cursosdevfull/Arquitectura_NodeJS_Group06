@@ -1,9 +1,5 @@
 import { BaseRoot } from '../../../core/domain/base-root';
-import { Goal } from '../entities/goal';
-import { GoalVO } from '../value-objects/goal.vo';
-import { RequerimentVO } from '../value-objects/requeriment.vo';
-import { SyllabusVO } from '../value-objects/syllabus.vo';
-import { TitleVO } from '../value-objects/title.vo';
+import { TitleVO } from '../../../schedule/domain/value-objects/title.vo';
 
 type CoursePropsEssentials = {
   title: string;
@@ -11,10 +7,10 @@ type CoursePropsEssentials = {
 
 type CoursePropsOptionals = {
   courseId: string;
-  level: string;
+  /*   level: string;
   requeriments: string[];
   goals: Goal[];
-  syllabus: string[];
+  syllabus: string[]; */
   isActive: boolean;
 };
 
@@ -26,10 +22,11 @@ export type CoursePropsUpdate = Partial<
 export class Course extends BaseRoot {
   courseId!: string;
   title!: string;
-  level!: string;
+
+  /*   level!: string;
   requeriments!: string[];
   goals!: Goal[];
-  syllabus!: string[];
+  syllabus!: string[]; */
 
   constructor(props: CourseProps) {
     super();
@@ -39,10 +36,25 @@ export class Course extends BaseRoot {
     this.createdAt = new Date();
   }
 
+  get properties() {
+    return {
+      courseId: this.courseId,
+      title: this.title,
+      /*       level: this.level,
+      requeriments: this.requeriments,
+      goals: this.goals,
+      syllabus: this.syllabus, */
+      isActive: this.isActive,
+      createdAt: this.createdAt,
+      updatedAt: this.updatedAt,
+      deletedAt: this.deletedAt,
+    };
+  }
+
   update(props: CoursePropsUpdate) {
-    new GoalVO(props.goals, 1);
+    /*     new GoalVO(props.goals, 1);
     new RequerimentVO(props.requeriments, 1);
-    new SyllabusVO(props.syllabus, 1);
+    new SyllabusVO(props.syllabus, 1); */
     new TitleVO(props.title, 3);
 
     Object.assign(this, props);

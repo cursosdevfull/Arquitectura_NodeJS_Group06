@@ -1,0 +1,34 @@
+services:
+  mysql-server:
+    image: mysql:8
+    container_name: mysql-server
+    environment:
+      MYSQL_ROOT_PASSWORD: 12345
+      MYSQL_USER: user
+      MYSQL_PASSWORD: 12345
+      MYSQL_DATABASE: db
+    ports:
+      - 3307:3306
+    volumes:
+      - vol-arq09:/var/lib/mysql
+    networks:
+      - net-arq09
+
+  mysql-client:
+    image: phpmyadmin/phpmyadmin
+    container_name: mysql-client
+    environment:
+      PMA_ARBITRARY: 1
+    ports:
+      - 8080:80
+    networks:
+      - net-arq09
+
+volumes:
+  vol-arq09:
+    name: vol-arq09
+
+networks:
+  net-arq09:
+    name: net-arq09
+    driver: bridge
