@@ -1,7 +1,7 @@
 import { IsNotEmpty, IsString } from 'class-validator';
 
-export class CourseInsertDto {
+export class ScheduleUpdateDto {
   @IsNotEmpty()
   @IsString()
-  title!: string;
+  description!: string;
 }

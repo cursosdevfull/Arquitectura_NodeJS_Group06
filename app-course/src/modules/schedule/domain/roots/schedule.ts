@@ -1,13 +1,13 @@
-import { Goal } from 'src/modules/course/domain/entities/goal';
 import { v4 as uuidv4 } from 'uuid';
 
 import { BaseRoot } from '../../../core/domain/base-root';
+import { Goal } from '../entities/goal';
 import { GoalVO } from '../value-objects/goal.vo';
 import { RequerimentVO } from '../value-objects/requeriment.vo';
 import { SyllabusVO } from '../value-objects/syllabus.vo';
 
 type SchedulePropsEssentials = {
-  title: string;
+  description: string;
   courseId: string;
 };
 
@@ -38,13 +38,6 @@ export class Schedule extends BaseRoot {
   constructor(props: ScheduleProps) {
     super();
 
-    if (props.syllabus && props.syllabus.length < 1)
-      throw new Error('Schedule must have at least one syllabus');
-
-    const goalsVO = new GoalVO(props.goals, 1);
-    const requerimentsVO = new RequerimentVO(props.requeriments, 1);
-    const syllabusVO = new SyllabusVO(props.syllabus, 1);
-
     Object.assign(this, props);
     this.isActive = props.isActive ?? true;
     this.createdAt = new Date();
@@ -62,6 +55,7 @@ export class Schedule extends BaseRoot {
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
       deletedAt: this.deletedAt,
+      description: this.description,
     };
   }
 
@@ -69,7 +63,6 @@ export class Schedule extends BaseRoot {
     new GoalVO(props.goals, 1);
     new RequerimentVO(props.requeriments, 1);
     new SyllabusVO(props.syllabus, 1);
-    //new TitleVO(props.title, 3);
 
     Object.assign(this, props);
     this.updatedAt = new Date();

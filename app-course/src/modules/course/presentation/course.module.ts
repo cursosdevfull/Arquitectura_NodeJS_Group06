@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
-import { DatabaseModule } from 'src/database.module';
 
+import { DatabaseModule } from '../../database/database.module';
+import { CourseGetByIdApplication } from '../application/course-get-by-id.application';
+import { CourseGetByPageApplication } from '../application/course-get-by-page.application';
 import { CourseGetApplication } from '../application/course-get.application';
 import { CourseSaveApplication } from '../application/course-save.application';
 import { CourseInfrastructure } from '../infrastructure/course.infrastructure';
@@ -8,7 +10,12 @@ import { courseProviders } from '../infrastructure/providers/course.provider';
 import { CourseController } from './course.controller';
 
 const infraProviders = [CourseInfrastructure];
-const applicationProviders = [CourseGetApplication, CourseSaveApplication];
+const applicationProviders = [
+  CourseGetApplication,
+  CourseSaveApplication,
+  CourseGetByIdApplication,
+  CourseGetByPageApplication,
+];
 
 @Module({
   imports: [DatabaseModule],

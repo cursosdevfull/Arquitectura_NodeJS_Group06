@@ -13,23 +13,5 @@ export class CourseFactory {
       title: titleVO.value,
       courseId,
     });
-    /*     if (props.syllabus && props.syllabus.length < 1)
-      throw new Error('Course must have at least one syllabus');
-
-    const goalsVO = new GoalVO(props.goals, 1);
-    const requerimentsVO = new RequerimentVO(props.requeriments, 1);
-    const syllabusVO = new SyllabusVO(props.syllabus, 1);
-
-
-    
-
-    return new Course({
-      ...props,
-      title: titleVO.value,
-      goals: goalsVO.value,
-      requeriments: requerimentsVO.value,
-      syllabus: syllabusVO.value,
-      courseId,
-    }); */
   }
 }

@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryColumn } from 'typeorm';
+
+import { ScheduleEntity } from '../../../schedule/infrastructure/entities/schedule.entity';
 
 @Entity({ name: 'course' })
 export class CourseEntity {
@@ -7,18 +9,6 @@ export class CourseEntity {
 
   @Column({ type: 'varchar', length: 255 })
   title!: string;
-
-  /*   @Column({ type: 'varchar', length: 255, nullable: true })
-  level!: string;
-
-  @Column({ type: 'json', nullable: true })
-  requeriments!: string[];
-
-  @Column({ type: 'json', nullable: true })
-  goals!: string[];
-
-  @Column({ type: 'json', nullable: true })
-  syllabus!: string[]; */
 
   @Column({ type: 'boolean' })
   isActive!: boolean;
@@ -31,4 +21,7 @@ export class CourseEntity {
 
   @Column({ type: 'timestamp', nullable: true })
   deletedAt!: Date;
+
+  @OneToMany(() => ScheduleEntity, (schedule) => schedule.course)
+  schedules!: ScheduleEntity[];
 }

@@ -1,6 +1,5 @@
+import * as path from 'node:path';
 import { DataSource } from 'typeorm';
-
-import { CourseEntity } from './modules/course/infrastructure/entities/course';
 
 export const databaseProviders = [
   {
@@ -13,7 +12,9 @@ export const databaseProviders = [
         username: 'user',
         password: '12345',
         database: 'db',
-        entities: [CourseEntity],
+        entities: [
+          path.resolve(path.join(__dirname, '../', '/**/*.entity{.ts,.js}')),
+        ],
         synchronize: true,
       });
 

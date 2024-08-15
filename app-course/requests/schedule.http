@@ -1,0 +1,43 @@
+### Insert
+post http://localhost:4000/v1/schedule
+Content-Type: application/json
+
+{
+    "courseId": "93e3b4c0-b826-4ef5-bfe4-7de290bc29dd",
+    "description": "NestJS 1",
+    "goals": [
+        {"description": "Goal 1"},
+        {"description": "Goal 2"},
+        {"description": "Goal 3"}
+    ],
+    "requirements": ["Requirement 1", "Requirement 2"],
+    "syllabus": ["Syllabus 1", "Syllabus 2"]
+}
+
+### Get all
+get http://localhost:4000/v1/schedule
+
+### Get by id
+get http://localhost:4000/v1/schedule/93e3b4c0-b826-4ef5-bfe4-7de290bc29dd
+
+### Update
+put http://localhost:4000/v1/schedule/9c132c06-1390-428c-b9f4-2d277cc0d922
+Content-Type: application/json
+
+{
+    "title": "This is a schedule updated"
+}
+
+### Update
+put http://localhost:4000/v2/schedule/9c132c06-1390-428c-b9f4-2d277cc0d922
+Content-Type: application/json
+
+{
+    "title": "This is a schedule updated"
+}
+
+### Delete
+delete http://localhost:4000/v1/schedule/06528a82-2f3d-4de2-88a0-ada9c34e2ce0
+
+### Page
+get http://localhost:4000/v1/schedule/page?page=3&limit=10

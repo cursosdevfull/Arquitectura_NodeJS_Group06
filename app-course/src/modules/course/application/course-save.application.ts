@@ -10,7 +10,7 @@ export class CourseSaveApplication {
     @Inject(CourseInfrastructure) private readonly repository: CourseRepository,
   ) {}
 
-  async save(course: Course): Promise<void> {
-    await this.repository.save(course);
+  async save(course: Course): Promise<Course> {
+    return this.repository.save(course);
   }
 }

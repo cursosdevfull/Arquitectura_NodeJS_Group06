@@ -7,26 +7,15 @@ type CoursePropsEssentials = {
 
 type CoursePropsOptionals = {
   courseId: string;
-  /*   level: string;
-  requeriments: string[];
-  goals: Goal[];
-  syllabus: string[]; */
   isActive: boolean;
 };
 
 export type CourseProps = CoursePropsEssentials & Partial<CoursePropsOptionals>;
-export type CoursePropsUpdate = Partial<
-  CoursePropsEssentials & Omit<CoursePropsOptionals, 'courseId'>
->;
+export type CoursePropsUpdate = Partial<CoursePropsEssentials>;
 
 export class Course extends BaseRoot {
   courseId!: string;
   title!: string;
-
-  /*   level!: string;
-  requeriments!: string[];
-  goals!: Goal[];
-  syllabus!: string[]; */
 
   constructor(props: CourseProps) {
     super();
@@ -40,10 +29,6 @@ export class Course extends BaseRoot {
     return {
       courseId: this.courseId,
       title: this.title,
-      /*       level: this.level,
-      requeriments: this.requeriments,
-      goals: this.goals,
-      syllabus: this.syllabus, */
       isActive: this.isActive,
       createdAt: this.createdAt,
       updatedAt: this.updatedAt,
@@ -52,9 +37,6 @@ export class Course extends BaseRoot {
   }
 
   update(props: CoursePropsUpdate) {
-    /*     new GoalVO(props.goals, 1);
-    new RequerimentVO(props.requeriments, 1);
-    new SyllabusVO(props.syllabus, 1); */
     new TitleVO(props.title, 3);
 
     Object.assign(this, props);

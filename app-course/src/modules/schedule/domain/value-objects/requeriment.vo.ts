@@ -1,4 +1,4 @@
-import { ArrayVO } from '../../../course/domain/value-objects/core/array.vo';
+import { ArrayVO } from '../../../core/domain/value-objects/array.vo';
 
 export class RequerimentVO extends ArrayVO<string> {
   constructor(value: string[] | undefined, minLength = 1) {

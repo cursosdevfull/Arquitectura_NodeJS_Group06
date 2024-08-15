@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { ResultPage } from 'src/modules/core/domain/result-page';
+import { PageDto } from 'src/modules/core/infrastructure/dtos/page.dto';
 import { Repository } from 'typeorm';
 
 import { CourseRepository } from '../domain/repositories/course.repository';
 import { Course } from '../domain/roots/course';
 import { CourseDto } from './dtos/course.dto';
-import { CourseEntity } from './entities/course';
+import { CourseEntity } from './entities/course.entity';
 
 @Injectable()
 export class CourseInfrastructure implements CourseRepository {
@@ -13,22 +15,35 @@ export class CourseInfrastructure implements CourseRepository {
     private readonly courseRepository: Repository<CourseEntity>,
   ) {}
 
-  save(course: Course): Promise<void> {
+  async save(course: Course): Promise<Course> {
     const entity = CourseDto.fromDomainToData(course);
-    this.courseRepository.save(entity);
-    return Promise.resolve();
+    await this.courseRepository.save(entity);
+    return course;
   }
-  getById(id: string): Promise<Course | null> {
-    return Promise.resolve(null);
+  async getById(id: string): Promise<Course | null> {
+    const courseFound = await this.courseRepository.findOne({
+      where: { courseId: id, isActive: true },
+    });
+
+    if (!courseFound) return null;
+
+    return CourseDto.fromDataToDomain(courseFound) as Course;
   }
   async get(): Promise<Course[]> {
-    const course = await this.courseRepository.find();
+    const course = await this.courseRepository.find({
+      where: { isActive: true },
+    });
     return CourseDto.fromDataToDomain(course) as Course[];
   }
-  update(course: Course): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  delete(id: string): Promise<Course> {
-    throw new Error('Method not implemented.');
+
+  async getByPage(page: number, limit: number): Promise<ResultPage<Course>> {
+    const [data, total] = await this.courseRepository.findAndCount({
+      where: { isActive: true },
+      skip: (page - 1) * limit,
+      take: limit,
+    });
+
+    const result = CourseDto.fromDataToDomain(data) as Course[];
+    return PageDto.fromDomainToData(result, page, limit, total);
   }
 }

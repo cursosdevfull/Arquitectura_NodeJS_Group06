@@ -1,7 +1,7 @@
 import { plainToClass } from 'class-transformer';
 
 import { Course } from '../../domain/roots/course';
-import { CourseEntity } from '../entities/course';
+import { CourseEntity } from '../entities/course.entity';
 
 export class CourseDto {
   static fromDomainToData(course: Course): CourseEntity {

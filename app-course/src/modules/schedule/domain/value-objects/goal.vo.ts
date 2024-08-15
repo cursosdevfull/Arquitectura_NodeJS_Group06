@@ -1,5 +1,5 @@
-import { Goal } from '../../../course/domain/entities/goal';
-import { ArrayVO } from '../../../course/domain/value-objects/core/array.vo';
+import { ArrayVO } from '../../../core/domain/value-objects/array.vo';
+import { Goal } from '../entities/goal';
 
 export class GoalVO extends ArrayVO<Goal> {
   constructor(value: Goal[] | undefined, minLength = 1) {
