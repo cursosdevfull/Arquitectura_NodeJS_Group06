@@ -1,3 +1,5 @@
+import { ClientException } from '../../exceptions/client.exception';
+
 export class ArrayVO<TypeArray> {
   private readonly val: TypeArray[] | undefined;
 
@@ -8,7 +10,7 @@ export class ArrayVO<TypeArray> {
   ) {
     if (value) {
       if (value.length < minLength)
-        throw new Error(
+        throw new ClientException(
           `Array ${elementName} must have at least ${minLength} items`,
         );
 

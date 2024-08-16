@@ -7,7 +7,7 @@ export class CourseEntity {
   @PrimaryColumn({ type: 'uuid' })
   courseId!: string;
 
-  @Column({ type: 'varchar', length: 255 })
+  @Column({ type: 'varchar', length: 255, unique: true })
   title!: string;
 
   @Column({ type: 'boolean' })

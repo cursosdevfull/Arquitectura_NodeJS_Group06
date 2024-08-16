@@ -1,8 +1,9 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ResultPage } from 'src/modules/core/domain/result-page';
 import { PageDto } from 'src/modules/core/infrastructure/dtos/page.dto';
-import { Repository } from 'typeorm';
+import { QueryFailedError, Repository } from 'typeorm';
 
+import { DatabaseInternalException } from '../../core/exceptions/database-internal.exception';
 import { ScheduleRepository } from '../domain/repositories/schedule.repository';
 import { Schedule } from '../domain/roots/schedule';
 import { ScheduleDto } from './dtos/schedule.dto';
@@ -13,45 +14,93 @@ export class ScheduleInfrastructure implements ScheduleRepository {
   constructor(
     @Inject('ScheduleRepository')
     private readonly scheduleRepository: Repository<ScheduleEntity>,
-    /*     @Inject('GoalRepository')
-    private readonly goalRepository: Repository<GoalEntity>, */
   ) {}
 
   async save(schedule: Schedule): Promise<Schedule> {
-    const entity = ScheduleDto.fromDomainToData(schedule);
-    await this.scheduleRepository.save(entity);
-    /*     for (const goal of schedule.goals) {
-      const goalEntity = new GoalEntity();
-      goalEntity.schedule = entity;
-      goalEntity.description = goal.description;
-      await this.goalRepository.save(goalEntity);
-    } */
-    return schedule;
+    try {
+      const entity = ScheduleDto.fromDomainToData(schedule);
+      await this.scheduleRepository.save(entity);
+      return schedule;
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        const err = error.driverError;
+        throw new DatabaseInternalException(err.sqlMessage);
+      } else if (error instanceof AggregateError) {
+        const err = error.errors[0];
+        throw new DatabaseInternalException(err.code);
+      }
+
+      throw new DatabaseInternalException(
+        'An error occurred while saving the course',
+      );
+    }
   }
   async getById(id: string): Promise<Schedule | null> {
-    const scheduleFound = await this.scheduleRepository.findOne({
-      where: { scheduleId: id, isActive: true },
-    });
+    try {
+      const scheduleFound = await this.scheduleRepository.findOne({
+        where: { scheduleId: id, isActive: true },
+      });
 
-    if (!scheduleFound) return null;
+      if (!scheduleFound) return null;
 
-    return ScheduleDto.fromDataToDomain(scheduleFound) as Schedule;
+      return ScheduleDto.fromDataToDomain(scheduleFound) as Schedule;
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        const err = error.driverError;
+        throw new DatabaseInternalException(err.sqlMessage);
+      } else if (error instanceof AggregateError) {
+        const err = error.errors[0];
+        throw new DatabaseInternalException(err.code);
+      }
+
+      throw new DatabaseInternalException(
+        'An error occurred while saving the course',
+      );
+    }
   }
   async get(): Promise<Schedule[]> {
-    const schedule = await this.scheduleRepository.find({
-      where: { isActive: true },
-    });
-    return ScheduleDto.fromDataToDomain(schedule) as Schedule[];
+    try {
+      const schedule = await this.scheduleRepository.find({
+        where: { isActive: true },
+      });
+      return ScheduleDto.fromDataToDomain(schedule) as Schedule[];
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        const err = error.driverError;
+        throw new DatabaseInternalException(err.sqlMessage);
+      } else if (error instanceof AggregateError) {
+        const err = error.errors[0];
+        throw new DatabaseInternalException(err.code);
+      }
+
+      throw new DatabaseInternalException(
+        'An error occurred while saving the course',
+      );
+    }
   }
 
   async getByPage(page: number, limit: number): Promise<ResultPage<Schedule>> {
-    const [data, total] = await this.scheduleRepository.findAndCount({
-      where: { isActive: true },
-      skip: (page - 1) * limit,
-      take: limit,
-    });
+    try {
+      const [data, total] = await this.scheduleRepository.findAndCount({
+        where: { isActive: true },
+        skip: (page - 1) * limit,
+        take: limit,
+      });
 
-    const result = ScheduleDto.fromDataToDomain(data) as Schedule[];
-    return PageDto.fromDomainToData(result, page, limit, total);
+      const result = ScheduleDto.fromDataToDomain(data) as Schedule[];
+      return PageDto.fromDomainToData(result, page, limit, total);
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        const err = error.driverError;
+        throw new DatabaseInternalException(err.sqlMessage);
+      } else if (error instanceof AggregateError) {
+        const err = error.errors[0];
+        throw new DatabaseInternalException(err.code);
+      }
+
+      throw new DatabaseInternalException(
+        'An error occurred while saving the course',
+      );
+    }
   }
 }

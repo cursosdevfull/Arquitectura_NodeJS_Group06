@@ -1,0 +1,15 @@
+key code
+value ER_DUP_ENTRY
+key errno
+value 1062
+key sqlState
+value 23000
+key sqlMessage
+value Duplicate entry 'Curso de NodeJS' for key 'course.IDX_ac5edecc1aefa58ed0237a7ee4'
+key sql
+
+
+key code
+value ECONNREFUSED
+key fatal
+value true

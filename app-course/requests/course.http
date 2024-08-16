@@ -3,7 +3,7 @@ post http://localhost:4000/v1/course
 Content-Type: application/json
 
 {
-    "title2": "This is a course2"
+    "title": "Microfrontends con Angular"
 }
 
 ### Get all

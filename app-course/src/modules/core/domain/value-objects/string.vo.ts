@@ -1,3 +1,5 @@
+import { ClientException } from '../../exceptions/client.exception';
+
 export class StringVO {
   private readonly val: string;
 
@@ -5,7 +7,9 @@ export class StringVO {
     if (!value) throw new Error('String is required');
 
     if (value.trim() === '' || value.length < minLength)
-      throw new Error(`String must have at least ${minLength} characters`);
+      throw new ClientException(
+        `String must have at least ${minLength} characters`,
+      );
 
     this.val = value;
   }
