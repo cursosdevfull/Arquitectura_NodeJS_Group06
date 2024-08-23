@@ -1,13 +1,13 @@
 ### Insert
-post http://localhost:4000/v1/course
+post http://coursedevelopment.eba-svkv4zmp.us-east-1.elasticbeanstalk.com/v1/course
 Content-Type: application/json
 
 {
-    "title": "Microfrontends con Angular 18 y React 23"
+    "title": "Angular PRO 18"
 }
 
 ### Get all
-get http://localhost:4000/v1/course
+get http://coursedevelopment.eba-svkv4zmp.us-east-1.elasticbeanstalk.com/v1/course
 
 ### Get by id
 get http://localhost:4000/v1/course/93e3b4c0-b826-4ef5-bfe4-7de290bc29dd
