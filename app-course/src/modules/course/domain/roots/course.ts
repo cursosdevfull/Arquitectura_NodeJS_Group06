@@ -1,5 +1,7 @@
 import { BaseRoot } from '../../../core/domain/base-root';
 import { TitleVO } from '../../../schedule/domain/value-objects/title.vo';
+import { CourseDeletedEvent } from '../events/course-deleted';
+import { CourseUpdatedEvent } from '../events/course-updated';
 
 type CoursePropsEssentials = {
   title: string;
@@ -41,10 +43,12 @@ export class Course extends BaseRoot {
 
     Object.assign(this, props);
     this.updatedAt = new Date();
+    this.apply(new CourseUpdatedEvent(this.courseId, this.title));
   }
 
   delete() {
     this.isActive = false;
     this.deletedAt = new Date();
+    this.apply(new CourseDeletedEvent(this.courseId));
   }
 }

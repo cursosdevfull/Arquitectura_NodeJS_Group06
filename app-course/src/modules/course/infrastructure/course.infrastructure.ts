@@ -22,6 +22,7 @@ export class CourseInfrastructure implements CourseRepository {
       await this.courseRepository.save(entity);
       return course;
     } catch (error) {
+      console.log('error', error);
       if (error instanceof QueryFailedError) {
         const err = error.driverError;
         throw new DatabaseInternalException(err.sqlMessage);

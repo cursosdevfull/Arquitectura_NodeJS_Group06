@@ -3,7 +3,7 @@ post http://localhost:4000/v1/course
 Content-Type: application/json
 
 {
-    "title": "Microfrontends con Angular"
+    "title": "Microfrontends con Angular 18 y React 23"
 }
 
 ### Get all
@@ -13,23 +13,23 @@ get http://localhost:4000/v1/course
 get http://localhost:4000/v1/course/93e3b4c0-b826-4ef5-bfe4-7de290bc29dd
 
 ### Update
-put http://localhost:4000/v1/course/9c132c06-1390-428c-b9f4-2d277cc0d922
+put http://localhost:4000/v1/course/37695e76-9d74-408b-903d-4de7113442f0
 Content-Type: application/json
 
 {
-    "title": "This is a course updated"
+    "title": "This is a course updated with Observability222555"
 }
 
 ### Update
-put http://localhost:4000/v2/course/9c132c06-1390-428c-b9f4-2d277cc0d922
+put http://localhost:4000/v2/course/aa14f384-5f64-4273-b210-c4fff378b8e7
 Content-Type: application/json
 
 {
-    "title": "This is a course updated"
+    "title": "This is a course updated4"
 }
 
 ### Delete
-delete http://localhost:4000/v1/course/06528a82-2f3d-4de2-88a0-ada9c34e2ce0
+delete http://localhost:4000/v1/course/37695e76-9d74-408b-903d-4de7113442f0
 
 ### Page
 get http://localhost:4000/v1/course/page?page=3&limit=10

@@ -4,6 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { CourseModule } from './modules/course/presentation/course.module';
+import { EventSourcingModule } from './modules/event-sourcing/presentation/event-sourcing.module';
 import { ScheduleModule } from './modules/schedule/presentation/schedule.module';
 
 @Module({
@@ -11,6 +12,7 @@ import { ScheduleModule } from './modules/schedule/presentation/schedule.module'
     CourseModule,
     ScheduleModule,
     ConfigModule.forRoot({ isGlobal: true }),
+    EventSourcingModule,
   ],
   controllers: [AppController],
   providers: [AppService, ConfigService],

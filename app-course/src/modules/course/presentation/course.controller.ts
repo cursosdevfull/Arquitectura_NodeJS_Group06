@@ -37,17 +37,18 @@ export class CourseController {
     private readonly courseGetByPage: CourseGetByPageApplication,
     private readonly queryBus: QueryBus,
     private readonly commandBus: CommandBus,
+    private readonly courseFactory: CourseFactory,
   ) {}
 
   @Post()
   async insert(@Body() data: CourseInsertDto) {
     try {
-      const course = CourseFactory.create({ title: data.title });
+      const course = this.courseFactory.create({ title: data.title });
       await this.courseSave.save(course);
+      course.commit();
 
       const command = new LogCommand('Course created');
-      const response = await this.commandBus.execute(command);
-      console.log('CourseController -> response', response);
+      await this.commandBus.execute(command);
 
       return CourseGetResponseDto.fromDomainToResponse(course);
     } catch (error) {
@@ -117,13 +118,16 @@ export class CourseController {
   @Put(':courseId')
   async update(@Body() data: CourseUpdateDto, @Param() param: CourseIdDto) {
     try {
-      const course = await this.courseGetId.getById(param.courseId);
-      if (!course) {
+      const courseFound = await this.courseGetId.getById(param.courseId);
+      if (!courseFound) {
         return { message: 'Course not found', statusCode: 200 };
       }
 
+      const course = this.courseFactory.create({ ...courseFound.properties });
+      course.uncommit();
       course.update(data);
       await this.courseSave.save(course);
+      course.commit();
       return CourseGetResponseDto.fromDomainToResponse(course);
     } catch (error) {
       if (error instanceof DatabaseInternalException) {
@@ -138,12 +142,14 @@ export class CourseController {
   @Version('2')
   async updateV2(@Body() data: CourseUpdateDto, @Param() param: CourseIdDto) {
     try {
-      const course = await this.courseGetId.getById(param.courseId);
-      if (!course) {
+      const courseFound = await this.courseGetId.getById(param.courseId);
+      if (!courseFound) {
         return { message: 'Not found', statusCode: 200 };
       }
 
+      const course = this.courseFactory.create(courseFound.properties);
       course.update(data);
+      course.commit();
       await this.courseSave.save(course);
       return CourseGetResponseDto.fromDomainToResponse(course);
     } catch (error) {
@@ -158,13 +164,16 @@ export class CourseController {
   @Delete(':courseId')
   async delete(@Param() param: CourseIdDto) {
     try {
-      const course = await this.courseGetId.getById(param.courseId);
-      if (!course) {
+      const courseFound = await this.courseGetId.getById(param.courseId);
+      if (!courseFound) {
         return { message: 'Course not found', statusCode: 200 };
       }
 
+      const course = this.courseFactory.create(courseFound.properties);
+      course.uncommit();
       course.delete();
       await this.courseSave.save(course);
+      course.commit();
       return CourseGetResponseDto.fromDomainToResponse(course);
     } catch (error) {
       if (error instanceof DatabaseInternalException) {
